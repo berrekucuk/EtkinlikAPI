@@ -4,6 +4,7 @@ using EtkinlikAPI.Models.ORM;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EtkinlikAPI.Migrations
 {
     [DbContext(typeof(EventContext))]
-    partial class EventContextModelSnapshot : ModelSnapshot
+    [Migration("20240528112920_ActivitiesTableCreated")]
+    partial class ActivitiesTableCreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,38 +64,6 @@ namespace EtkinlikAPI.Migrations
                     b.ToTable("Activities");
                 });
 
-            modelBuilder.Entity("EtkinlikAPI.Models.ORM.ActivityImages", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ActivityID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("AddDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActivityID");
-
-                    b.ToTable("ActivityImages");
-                });
-
             modelBuilder.Entity("EtkinlikAPI.Models.ORM.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -129,17 +100,6 @@ namespace EtkinlikAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("EtkinlikAPI.Models.ORM.ActivityImages", b =>
-                {
-                    b.HasOne("EtkinlikAPI.Models.ORM.Activity", "Activity")
-                        .WithMany()
-                        .HasForeignKey("ActivityID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Activity");
                 });
 #pragma warning restore 612, 618
         }

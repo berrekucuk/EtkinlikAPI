@@ -85,6 +85,24 @@ namespace EtkinlikAPI.Controllers
         }
 
 
+        [HttpPut("{id}")]
+        public IActionResult Update(Guid id, UpdateRequestCategoryDto model)
+        {
+            var category = _db.Categories.FirstOrDefault(c => c.Id == id && c.IsDeleted == false);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                category.Name = model.Name;
+                category.UpdateDate = DateTime.Now;
+                _db.SaveChanges();
+
+                return Ok(model);
+            }
+        }
 
     }
 

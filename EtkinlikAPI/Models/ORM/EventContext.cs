@@ -10,5 +10,7 @@ namespace EtkinlikAPI.Models.ORM
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<ActivityImages> ActivityImages { get; set; }
     }
 }
