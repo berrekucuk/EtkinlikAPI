@@ -1,4 +1,4 @@
-﻿using EtkinlikAPI.Models.DTO.Activity;
+﻿using EtkinlikAPI.Models.DTO;
 using EtkinlikAPI.Models.ORM;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +13,53 @@ namespace EtkinlikAPI.Controllers
         public ActivityController(EventContext db)
         {
             _db = db;    
+        }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            List<GetAllActivityResponseDto> model = _db.Activities.Where(x => x.IsDeleted == false).Select(x => new GetAllActivityResponseDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                StartDate = x.StartDate,
+                CategoryName = x.Category.Name,
+                Latitude = x.Latitude,
+                Longitude = x.Longitude,
+            }).ToList();
+
+            // Activiteye ait resimleri çekebilmemiz için aşağıdaki foeach döngüsünü kullanıyoruz.
+            foreach (var item in model)
+            {
+                item.Images = _db.ActivityImages.Where(x => x.ActivityID == item.Id && x.IsDeleted == false).Select(x => x.ImagePath).ToList();
+            }
+
+            return Ok(model);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(Guid id)
+        {
+            var activity = _db.Activities.FirstOrDefault(x => x.Id == id && x.IsDeleted == false);
+
+            if(activity == null)
+            {
+                return NotFound();
+            }
+
+            GetActivityResponseDto model = new GetActivityResponseDto()
+            {
+                Id=activity.Id,
+                Name = activity.Name,
+                Description = activity.Description,
+                StartDate = activity.StartDate,
+                CategoryName = activity.Category.Name,
+
+                Images = _db.ActivityImages.Where(x => x.ActivityID == id && x.IsDeleted == false).Select(x => x.ImagePath).ToList()
+            };
+
+            return Ok(model);
         }
 
         [HttpPost]
@@ -64,6 +111,22 @@ namespace EtkinlikAPI.Controllers
                 _db.ActivityImages.Add(activityImage);
             }
 
+            _db.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var activity = _db.Activities.FirstOrDefault(x => x.Id == id && x.IsDeleted == false);
+
+            if(activity == null)
+            {
+                return NotFound();
+            }
+
+            activity.IsDeleted = true;
             _db.SaveChanges();
 
             return Ok();

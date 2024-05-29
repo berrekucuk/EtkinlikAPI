@@ -6,6 +6,8 @@ namespace EtkinlikAPI.Models.ORM
     {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string Latitude { get; set; } = string.Empty;
+        public string Longitude { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public Guid CategoryID { get; set; }
 

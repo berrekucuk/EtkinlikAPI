@@ -4,6 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using EtkinlikAPI.Models.Validations;
 using EtkinlikAPI.Models.DTO;
+using EtkinlikAPI.Models.Validations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddValidatorsFromAssemblyContaining<CreateCategoryRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateCategoryRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityRequestValidator>();
 
 var app = builder.Build();
 
@@ -46,6 +48,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//Ön yüzde resimleri göstememiz için bu kodu yazmamýz gerek.
+app.UseStaticFiles();
 
 app.UseCors();
 
