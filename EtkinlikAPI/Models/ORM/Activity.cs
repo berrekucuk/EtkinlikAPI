@@ -9,6 +9,7 @@ namespace EtkinlikAPI.Models.ORM
         public string Latitude { get; set; } = string.Empty;
         public string Longitude { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
+        public bool IsPopular { get; set; } = false;
         public Guid CategoryID { get; set; }
 
         [ForeignKey("CategoryID")]
