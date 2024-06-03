@@ -1,5 +1,6 @@
 ﻿using EtkinlikAPI.Models.DTO;
 using EtkinlikAPI.Models.ORM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,13 +51,14 @@ namespace EtkinlikAPI.Controllers
             }
         }
 
-
+        [Authorize] //JWT kullanarak yetkilendirmek istediğimiz endpointin üst kısmına yazıyoruz.
         [HttpPost]
         public IActionResult Post(CreateCategoryRequestDto model)
         {
             var entity = new Category
             {
                 Name = model.Name,
+                Icon = ""
             };
 
             _db.Categories.Add(entity);
